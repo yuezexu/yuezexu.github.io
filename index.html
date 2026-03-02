@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>徐悦泽 | 个人主页</title>
+    <link rel="stylesheet" href="styles.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="lang-switch-container">
+        <button class="lang-switch-btn" onclick="toggleLanguage()">EN / 中文</button>
+    </div>
+
+    <div class="background-effect" id="bgEffect"></div>
+
+    <!-- ① Cover / 第一屏 -->
+    <section class="container cover-section" id="home">
+        <div class="intro-box">
+            <h1 class="greeting">
+                <span class="line">
+                    <span class="highlight zh">徐悦泽</span>
+                    <span class="highlight en">Yueze (Zach) Xu</span>
+                    <span class="zh"> | 跨界教育与商业的实践者</span>
+                    <span class="en title-en"> | Cross-border Education &amp; Business Practitioner</span>
+                </span>
+                <span class="line zh">从布里斯班的物业管理，到深耕五年的技能培训与教育 BD</span>
+                <span class="line en subtitle-en">From Property Management in Brisbane to 5 Years in Skilling &amp;
+                    Education BD</span>
+            </h1>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="cover-nav fade-in-nav">
+            <a href="#about-contact" class="nav-pill">
+                <span class="nav-icon">👤</span>
+                <span class="zh">About Me</span>
+                <span class="en">About Me</span>
+            </a>
+            <a href="#about-contact" class="nav-pill" id="nav-blog-link">
+                <span class="nav-icon">✍️</span>
+                <span class="zh">Blogs</span>
+                <span class="en">Blogs</span>
+            </a>
+            <a href="#builds" class="nav-pill">
+                <span class="nav-icon">⚡</span>
+                <span class="zh">Builds</span>
+                <span class="en">Builds</span>
+            </a>
+        </nav>
+
+        <div class="scroll-indicator">
+            <span class="zh">下滑了解更多</span>
+            <span class="en">Scroll Down to Explore</span>
+            <div class="arrow"></div>
+        </div>
+    </section>
+
+    <!-- ② About & Blog / 第二屏 -->
+    <section class="container content-section" id="about-contact">
+        <div class="section-content fade-in-section">
+            <h2 class="section-title zh">About Me</h2>
+            <h2 class="section-title en">About Me</h2>
+
+            <div class="about-grid">
+                <div class="about-text">
+                    <div class="zh">
+                        <p>我是一名跨界教育与商业的实践者。在过往的经历中，我从布里斯班的物业管理领域沉淀了严谨的商业逻辑，并在此后的五年中，深耕技能培训与教育
+                            BD。我致力于通过整合优质资源与高效的商业模式，推动教育项目的落地与创新发展。</p>
+                        <p>在这里，不仅可以看到我的履历，也能感受到我对商业与教育融合的思考与热情。</p>
+                    </div>
+                    <div class="en">
+                        <p>I am a practitioner sitting at the intersection of education and business. In my past
+                            experiences, I accumulated rigorous business acumen from the property management sector in
+                            Brisbane, and subsequently spent five years deeply engaged in skills training and education
+                            BD. I am committed to advancing the launch and innovative development of educational
+                            projects by integrating premium resources with highly efficient business models.</p>
+                        <p>Here, you will not only discover my professional background but also sense my passion and
+                            thinking regarding the fusion of business and education.</p>
+                    </div>
+                </div>
+
+                <div class="contact-card">
+                    <h3 class="zh">建立联系</h3>
+                    <h3 class="en">Get in Touch</h3>
+                    <p class="contact-desc zh">期待与您交流合作，共同探讨教育与商业的无限可能。</p>
+                    <p class="contact-desc en">Looking forward to connecting and exploring the infinite possibilities in
+                        education and business together.</p>
+                    <ul class="contact-links">
+                        <li>
+                            <span class="icon">✉️</span>
+                            <a href="mailto:yueze.xu@gmail.com" class="link zh">发送邮件</a>
+                            <a href="mailto:yueze.xu@gmail.com" class="link en">Send Email</a>
+                        </li>
+                        <li>
+                            <span class="icon">💼</span>
+                            <a href="#" class="link zh">LinkedIn 个人主页</a>
+                            <a href="#" class="link en">LinkedIn Profile</a>
+                        </li>
+                        <li>
+                            <span class="icon">📱</span>
+                            <span class="link zh">WeChat: 请通过邮件获取</span>
+                            <span class="link en">WeChat: Request via Email</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 class="section-title fade-in-section" id="blog" style="margin-top: 60px;">
+                <span class="zh">Blogs</span>
+                <span class="en">Blogs</span>
+            </h2>
+            <div class="blog-grid fade-in-section">
+                <article class="blog-card">
+                    <div class="blog-card-header">
+                        <span class="blog-tag zh">教育 BD</span>
+                        <span class="blog-tag en">Education BD</span>
+                        <span class="blog-date zh">2025年 12月</span>
+                        <span class="blog-date en">Dec 2025</span>
+                    </div>
+                    <h3 class="blog-card-title">
+                        <a href="#" class="blog-link">这是一个文章</a>
+                    </h3>
+                    <p class="blog-excerpt zh">在五年的教育 BD
+                        实践中，我见过无数学员因选择了并不适合自己的课程而浪费时间与金钱。本文分享我的方法论，帮助你在碎片化的培训市场中找到真正有价值的内容……</p>
+                    <p class="blog-excerpt en">In five years of education BD practice, I've seen countless students
+                        waste time and money on unsuitable courses. This article shares my methodology for finding truly
+                        valuable content in a fragmented market...</p>
+                    <a href="#" class="blog-read-more zh">阅读全文 →</a>
+                    <a href="#" class="blog-read-more en">Read More →</a>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-card-header">
+                        <span class="blog-tag zh">商业思考</span>
+                        <span class="blog-tag en">Business Insights</span>
+                        <span class="blog-date zh">2025年 10月</span>
+                        <span class="blog-date en">Oct 2025</span>
+                    </div>
+                    <h3 class="blog-card-title">
+                        <a href="#" class="blog-link">这是一个文章</a>
+                    </h3>
+                    <p class="blog-excerpt zh">在澳大利亚从事物业管理期间，我深刻感受到了中西方商业决策逻辑的差异。这种差异不仅体现在谈判风格上，更体现在对"信任"的理解和建立方式上……</p>
+                    <p class="blog-excerpt en">During my time in property management in Australia, I deeply felt the
+                        differences between Chinese and Western business decision-making logic, especially regarding
+                        trust building...</p>
+                    <a href="#" class="blog-read-more zh">阅读全文 →</a>
+                    <a href="#" class="blog-read-more en">Read More →</a>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-card-header">
+                        <span class="blog-tag zh">物业管理</span>
+                        <span class="blog-tag en">Property Management</span>
+                        <span class="blog-date zh">2025年 8月</span>
+                        <span class="blog-date en">Aug 2025</span>
+                    </div>
+                    <h3 class="blog-card-title">
+                        <a href="#" class="blog-link">这是一个文章</a>
+                    </h3>
+                    <p class="blog-excerpt zh">
+                        很多人以为物业管理就是修理水管和收租，但实际上它更像是一场关于风险认知与人性的修行。我想把自己在布里斯班这段经历中学到的，分享给每一个想在这个行业立足的年轻人……</p>
+                    <p class="blog-excerpt en">Many think property management is just about fixing pipes and collecting
+                        rent, but it's more
+                        about risk engineering and human nature. Here I share the lessons I learned in Brisbane...</p>
+                    <a href="#" class="blog-read-more zh">阅读全文 →</a>
+                    <a href="#" class="blog-read-more en">Read More →</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ③ Builds / 第三屏 -->
+    <section class="container content-section builds-section" id="builds">
+        <div class="section-content fade-in-section">
+            <h2 class="section-title zh">Builds</h2>
+            <h2 class="section-title en">Builds</h2>
+            <p class="builds-desc zh">用 Vibe Coding 做出来的小东西——不完美，但都是真实想法的落地。</p>
+            <p class="builds-desc en">Small things built with Vibe Coding — imperfect, but every one of them is a real
+                idea shipped.</p>
+
+            <div class="builds-grid fade-in-section">
+
+                <div class="build-card">
+                    <div class="build-card-top">
+                        <span class="build-emoji">🗂️</span>
+                        <span class="build-status zh">进行中</span>
+                        <span class="build-status en">In Progress</span>
+                    </div>
+                    <h3 class="build-title zh">项目名称</h3>
+                    <h3 class="build-title en">Project Name</h3>
+                    <p class="build-desc zh">一句话介绍这个小项目是做什么的，解决了哪个具体痛点或满足了什么想法。</p>
+                    <p class="build-desc en">One-line intro about what this build does and the specific itch it
+                        scratches.</p>
+                    <div class="build-tags">
+                        <span class="build-tech">HTML</span>
+                        <span class="build-tech">CSS</span>
+                        <span class="build-tech">JS</span>
+                    </div>
+                    <a href="#" class="build-link zh">查看项目 →</a>
+                    <a href="#" class="build-link en">View Project →</a>
+                </div>
+
+                <div class="build-card">
+                    <div class="build-card-top">
+                        <span class="build-emoji">📊</span>
+                        <span class="build-status zh">已完成</span>
+                        <span class="build-status en">Shipped</span>
+                    </div>
+                    <h3 class="build-title zh">项目名称</h3>
+                    <h3 class="build-title en">Project Name</h3>
+                    <p class="build-desc zh">一句话介绍这个小项目是做什么的，解决了哪个具体痛点或满足了什么想法。</p>
+                    <p class="build-desc en">One-line intro about what this build does and the specific itch it
+                        scratches.</p>
+                    <div class="build-tags">
+                        <span class="build-tech">React</span>
+                        <span class="build-tech">API</span>
+                    </div>
+                    <a href="#" class="build-link zh">查看项目 →</a>
+                    <a href="#" class="build-link en">View Project →</a>
+                </div>
+
+                <div class="build-card">
+                    <div class="build-card-top">
+                        <span class="build-emoji">🤖</span>
+                        <span class="build-status zh">已完成</span>
+                        <span class="build-status en">Shipped</span>
+                    </div>
+                    <h3 class="build-title zh">项目名称</h3>
+                    <h3 class="build-title en">Project Name</h3>
+                    <p class="build-desc zh">一句话介绍这个小项目是做什么的，解决了哪个具体痛点或满足了什么想法。</p>
+                    <p class="build-desc en">One-line intro about what this build does and the specific itch it
+                        scratches.</p>
+                    <div class="build-tags">
+                        <span class="build-tech">Python</span>
+                        <span class="build-tech">AI</span>
+                    </div>
+                    <a href="#" class="build-link zh">查看项目 →</a>
+                    <a href="#" class="build-link en">View Project →</a>
+                </div>
+
+                <div class="build-card build-card--placeholder">
+                    <span class="build-emoji">＋</span>
+                    <p class="build-desc zh">更多正在孵化中……</p>
+                    <p class="build-desc en">More cooking…</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
