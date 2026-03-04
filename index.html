@@ -12,8 +12,7 @@
 </head>
 
 <body>
-    <div class="top-right-controls">
-        <div id="auth-btn-container"></div>
+    <div class="lang-switch-container">
         <button class="lang-switch-btn" onclick="toggleLanguage()">EN / 中文</button>
     </div>
 
@@ -188,40 +187,21 @@
 
                 <div class="build-card">
                     <div class="build-card-top">
-                        <span class="build-emoji">🚀</span>
-                        <span class="build-status zh">已完成</span>
-                        <span class="build-status en">Shipped</span>
-                    </div>
-                    <h3 class="build-title zh">中文打字速度测试</h3>
-                    <h3 class="build-title en">Chinese Typing Speed Test</h3>
-                    <p class="build-desc zh">60 秒倒计时，实时 WPM 速度显示，支持拼音输入法。登录后自动记录每日最高成绩并查看进步曲线。</p>
-                    <p class="build-desc en">60-second timer with real-time WPM display and Pinyin IME support. Login to
-                        track daily best scores and view progress charts.</p>
-                    <div class="build-tags">
-                        <span class="build-tech">HTML</span>
-                        <span class="build-tech">CSS</span>
-                        <span class="build-tech">JS</span>
-                        <span class="build-tech">Firebase</span>
-                    </div>
-                    <a href="chinese-typing.html" class="build-link zh">开始测试 →</a>
-                    <a href="chinese-typing.html" class="build-link en">Start Test →</a>
-                </div>
-
-                <div class="build-card">
-                    <div class="build-card-top">
                         <span class="build-emoji">⌨️</span>
                         <span class="build-status zh">已完成</span>
                         <span class="build-status en">Shipped</span>
                     </div>
                     <h3 class="build-title zh">全拼指法训练</h3>
                     <h3 class="build-title en">Pinyin Typing Trainer</h3>
-                    <p class="build-desc zh">交互式键盘指法练习工具，支持 Home Row 入门和全拼单词两种模式，实时高亮按键与手指位置。</p>
-                    <p class="build-desc en">Interactive typing trainer with SVG keyboard & finger map. Supports Home
-                        Row basics and Pinyin word practice with real-time feedback.</p>
+                    <p class="build-desc zh">交互式键盘指法练习工具，包含入门指法、全拼词库练习以及<strong>中文打字速度测速</strong>功能。登录后可记录每日最高成绩并查看进步曲线。
+                    </p>
+                    <p class="build-desc en">Interactive typing trainer with Home Row basics, Pinyin word practice, and
+                        <strong>Chinese Speed Test</strong>. Login to track daily best scores and progress trends.</p>
                     <div class="build-tags">
                         <span class="build-tech">HTML</span>
                         <span class="build-tech">CSS</span>
                         <span class="build-tech">JS</span>
+                        <span class="build-tech">Auth</span>
                     </div>
                     <a href="typing.html" class="build-link zh">查看项目 →</a>
                     <a href="typing.html" class="build-link en">View Project →</a>
@@ -276,7 +256,6 @@
     </section>
 
     <script src="script.js"></script>
-    <script type="module" src="auth.js"></script>
 </body>
 
 </html>

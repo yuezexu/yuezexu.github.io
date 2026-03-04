@@ -87,7 +87,154 @@
         .top-bar h1 {
             font-size: 1.25rem;
             font-weight: 700;
-            margin: 0 auto 0 0;
+            margin: 0;
+        }
+
+        /* Top-right controls (for Login) */
+        .top-right-controls {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Auth button */
+        .auth-btn {
+            font-family: 'Noto Sans SC', system-ui, sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            padding: 7px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background-color: var(--surface);
+            color: var(--muted);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .auth-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            background-color: var(--primary-l);
+        }
+
+        .auth-btn--user {
+            color: var(--primary);
+            border-color: var(--primary);
+            background-color: var(--primary-l);
+        }
+
+        .auth-avatar {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Auth modal Styles */
+        .auth-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-modal {
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 44px 40px;
+            max-width: 360px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            position: relative;
+            animation: slideUp 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .auth-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .auth-modal-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .auth-modal-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .auth-modal-desc {
+            font-size: 0.88rem;
+            color: var(--muted);
+            margin-bottom: 28px;
+        }
+
+        .auth-modal-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .auth-provider-btn {
+            font-family: 'Noto Sans SC', system-ui, sans-serif;
+            font-size: 0.92rem;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .auth-provider-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: var(--primary-l);
+        }
+
+        .auth-provider-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         /* ===================================================
@@ -442,6 +589,9 @@
     <div class="top-bar">
         <a href="index.html" class="back-link">← 返回主页</a>
         <h1>⌨️ 全拼指法训练</h1>
+        <div class="top-right-controls">
+            <div id="auth-btn-container"></div>
+        </div>
     </div>
 
     <!-- Mode selector -->
@@ -451,6 +601,9 @@
         </button>
         <button class="mode-btn" id="btn-pinyin" onclick="setMode('pinyin')">
             全拼单词练习
+        </button>
+        <button class="mode-btn" id="btn-speedtest" onclick="location.href='chinese-typing.html'">
+            🚀 中文速度测试
         </button>
     </div>
 
@@ -488,6 +641,7 @@
     <!-- Next word button -->
     <button class="btn-next" id="btn-next" onclick="nextWord()">下一个词 →</button>
 
+    <script type="module" src="auth.js"></script>
     <script>
         /* ====================================================
            DATA: Keyboard Layout & Finger Map
