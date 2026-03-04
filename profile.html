@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 | 徐悦泽</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --surface: #ffffff;
+            --primary: #1a73e8;
+            --primary-light: rgba(26, 115, 232, 0.08);
+            --text: #202124;
+            --text-muted: #5f6368;
+            --correct: #34A853;
+            --border: rgba(0, 0, 0, 0.08);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .ph-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            height: 60px;
+        }
+
+        .ph-back {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .ph-back:hover {
+            color: var(--primary);
+        }
+
+        .ph-header-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .ph-logout-btn {
+            font-family: 'Noto Sans SC', system-ui, sans-serif;
+            font-size: 0.82rem;
+            padding: 6px 14px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .ph-logout-btn:hover {
+            border-color: #EA4335;
+            color: #EA4335;
+        }
+
+        /* Auth guard */
+        .ph-guard {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 16px;
+            padding: 24px;
+        }
+
+        .ph-guard-icon {
+            font-size: 3.5rem;
+        }
+
+        .ph-guard h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .ph-guard p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .ph-guard-btn {
+            font-family: 'Noto Sans SC', system-ui, sans-serif;
+            font-size: 0.92rem;
+            font-weight: 500;
+            padding: 12px 32px;
+            border-radius: 24px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ph-guard-btn:hover {
+            background: #1557b0;
+        }
+
+        /* Main */
+        .ph-main {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 82px 24px 60px;
+        }
+
+        /* User card */
+        .ph-user-card {
+            background: var(--surface);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: 32px 36px;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+
+        .ph-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-light);
+            flex-shrink: 0;
+        }
+
+        .ph-avatar-placeholder {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .ph-user-info {
+            flex: 1;
+        }
+
+        .ph-user-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .ph-user-email {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .ph-user-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 3px 12px;
+            border-radius: 20px;
+            letter-spacing: 0.03em;
+        }
+
+        /* Stats row */
+        .ph-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .ph-stat-card {
+            background: var(--surface);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 20px 24px;
+            text-align: center;
+            transition: box-shadow 0.2s;
+        }
+
+        .ph-stat-card:hover {
+            box-shadow: var(--shadow);
+        }
+
+        .ph-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+
+        .ph-stat-val {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: var(--primary);
+        }
+
+        .ph-stat-unit {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Chart section */
+        .ph-section {
+            background: var(--surface);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: 28px 32px;
+            margin-bottom: 24px;
+        }
+
+        .ph-section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ph-section-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 18px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        #progressChart {
+            width: 100%;
+            height: 220px;
+            display: block;
+        }
+
+        .chart-empty {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            padding: 40px;
+        }
+
+        /* History table */
+        .ph-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .ph-table th,
+        .ph-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ph-table th {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            background: var(--bg);
+        }
+
+        .ph-table td {
+            font-size: 0.9rem;
+        }
+
+        .ph-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .ph-table tr:hover td {
+            background: rgba(26, 115, 232, 0.02);
+        }
+
+        .wpm-pill {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .wpm-high {
+            background: rgba(52, 168, 83, 0.12);
+            color: #2d8a47;
+        }
+
+        .wpm-mid {
+            background: rgba(26, 115, 232, 0.1);
+            color: var(--primary);
+        }
+
+        .wpm-low {
+            background: rgba(0, 0, 0, 0.06);
+            color: var(--text-muted);
+        }
+
+        .best-badge {
+            font-size: 0.7rem;
+            background: rgba(251, 188, 5, 0.2);
+            color: #b06000;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 6px;
+        }
+
+        .no-data {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 40px;
+            font-size: 0.9rem;
+        }
+
+        /* Auth modal */
+        .auth-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-modal {
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 44px 40px;
+            max-width: 360px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            position: relative;
+            animation: slideUp 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .auth-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .auth-modal-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .auth-modal-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .auth-modal-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+        }
+
+        .auth-modal-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .auth-provider-btn {
+            font-family: 'Noto Sans SC', system-ui, sans-serif;
+            font-size: 0.92rem;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .auth-provider-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .auth-provider-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        /* Auth btn shared */
+        .auth-btn {
+            font-family: 'Noto Sans SC', system-ui, sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 7px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        @media (max-width: 640px) {
+            .ph-user-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .ph-stats-row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .ph-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="ph-header">
+        <a href="index.html" class="ph-back">← 返回主页</a>
+        <span class="ph-header-title">个人中心</span>
+        <button class="ph-logout-btn" id="logoutBtn">退出登录</button>
+    </header>
+
+    <!-- Guard: show login prompt if not logged in -->
+    <div class="ph-guard" id="authGuard" style="display:none">
+        <div class="ph-guard-icon">🔐</div>
+        <h2>请先登录</h2>
+        <p>登录后即可查看你的打字成绩历史</p>
+        <button class="ph-guard-btn" id="guardGoogleBtn">
+            <svg width="20" height="20" viewBox="0 0 48 48">
+                <path fill="#EA4335"
+                    d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                <path fill="#4285F4"
+                    d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+                <path fill="#FBBC05"
+                    d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+                <path fill="#34A853"
+                    d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.29-8.16 2.29-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+            </svg>
+            使用 Google 账号登录
+        </button>
+        <a href="chinese-typing.html"
+            style="font-size:0.85rem;color:var(--text-muted);text-decoration:none;margin-top:4px">先体验打字测试 →</a>
+    </div>
+
+    <!-- Main content (only for logged in) -->
+    <main class="ph-main" id="phMain" style="display:none">
+        <!-- User card -->
+        <div class="ph-user-card">
+            <div id="userAvatarWrap"></div>
+            <div class="ph-user-info">
+                <div class="ph-user-name" id="profileName">-</div>
+                <div class="ph-user-email" id="profileEmail">-</div>
+                <span class="ph-user-badge">
+                    <svg width="14" height="14" viewBox="0 0 48 48">
+                        <path fill="#EA4335"
+                            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                        <path fill="#4285F4"
+                            d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+                        <path fill="#FBBC05"
+                            d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+                        <path fill="#34A853"
+                            d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.29-8.16 2.29-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+                    </svg>
+                    Google 账号
+                </span>
+            </div>
+        </div>
+
+        <!-- Stats summary -->
+        <div class="ph-stats-row">
+            <div class="ph-stat-card">
+                <div class="ph-stat-label">🏆 历史最高</div>
+                <div class="ph-stat-val" id="statBest">--</div>
+                <div class="ph-stat-unit">字/分钟</div>
+            </div>
+            <div class="ph-stat-card">
+                <div class="ph-stat-label">📊 近期平均</div>
+                <div class="ph-stat-val" id="statAvg">--</div>
+                <div class="ph-stat-unit">字/分钟</div>
+            </div>
+            <div class="ph-stat-card">
+                <div class="ph-stat-label">📅 累计打卡</div>
+                <div class="ph-stat-val" id="statDays">--</div>
+                <div class="ph-stat-unit">天</div>
+            </div>
+        </div>
+
+        <!-- Progress chart -->
+        <div class="ph-section">
+            <div class="ph-section-title">进步曲线（近 30 天）</div>
+            <canvas id="progressChart"></canvas>
+            <div class="chart-empty" id="chartEmpty" style="display:none">暂无数据，完成至少 2 次测试后显示曲线图 📈</div>
+        </div>
+
+        <!-- History table -->
+        <div class="ph-section">
+            <div class="ph-section-title">成绩记录</div>
+            <div id="historyContainer">
+                <div class="no-data">暂无成绩记录，<a href="chinese-typing.html" style="color:var(--primary)">去测试一下</a> 吧！
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { getCurrentUser, getTypingScores, loginWithGoogle, logout } from './auth.js';
+
+        // ── Init ───────────────────────────────────────────────────────────
+        function init() {
+            const user = getCurrentUser();
+            if (!user) {
+                document.getElementById('authGuard').style.display = 'flex';
+                document.getElementById('phMain').style.display = 'none';
+                setupGuardLogin();
+            } else {
+                document.getElementById('authGuard').style.display = 'none';
+                document.getElementById('phMain').style.display = 'block';
+                loadProfile(user);
+            }
+        }
+
+        function loadProfile(user) {
+            // User info
+            const avatarWrap = document.getElementById('userAvatarWrap');
+            if (user.avatar) {
+                avatarWrap.innerHTML = `<img src="${user.avatar}" class="ph-avatar" alt="" onerror="this.parentElement.innerHTML='<div class=ph-avatar-placeholder>👤</div>'">`;
+            } else {
+                avatarWrap.innerHTML = `<div class="ph-avatar-placeholder">👤</div>`;
+            }
+            document.getElementById('profileName').textContent = user.name || '用户';
+            document.getElementById('profileEmail').textContent = user.email || '';
+
+            // Load scores
+            const scores = getTypingScores();
+            const entries = Object.entries(scores).sort((a, b) => b[0].localeCompare(a[0]));
+
+            if (entries.length === 0) {
+                document.getElementById('statBest').textContent = '--';
+                document.getElementById('statAvg').textContent = '--';
+                document.getElementById('statDays').textContent = '0';
+                document.getElementById('progressChart').style.display = 'none';
+                document.getElementById('chartEmpty').style.display = 'block';
+                return;
+            }
+
+            // Stats
+            const allWpm = entries.map(([, v]) => v.wpm);
+            const best = Math.max(...allWpm);
+            const avg = Math.round(allWpm.reduce((a, b) => a + b, 0) / allWpm.length);
+            document.getElementById('statBest').textContent = best;
+            document.getElementById('statAvg').textContent = avg;
+            document.getElementById('statDays').textContent = entries.length;
+
+            // Chart
+            if (entries.length >= 2) {
+                drawChart(entries.slice(0, 30).reverse()); // oldest first for chart
+            } else {
+                document.getElementById('progressChart').style.display = 'none';
+                document.getElementById('chartEmpty').style.display = 'block';
+            }
+
+            // Table
+            const bestWpm = best;
+            const rows = entries.map(([date, v]) => {
+                const wpmClass = v.wpm >= 70 ? 'wpm-high' : v.wpm >= 40 ? 'wpm-mid' : 'wpm-low';
+                const isBest = v.wpm === bestWpm ? '<span class="best-badge">最高</span>' : '';
+                return `<tr>
+            <td>${formatDate(date)}</td>
+            <td><span class="wpm-pill ${wpmClass}">${v.wpm}</span>${isBest}</td>
+            <td>${v.accuracy != null ? v.accuracy + '%' : '--'}</td>
+        </tr>`;
+            }).join('');
+
+            document.getElementById('historyContainer').innerHTML = `
+        <table class="ph-table">
+            <thead><tr><th>日期</th><th>速度（字/分）</th><th>正确率</th></tr></thead>
+            <tbody>${rows}</tbody>
+        </table>`;
+        }
+
+        function formatDate(dateStr) {
+            const [y, m, d] = dateStr.split('-');
+            return `${y} 年 ${parseInt(m)} 月 ${parseInt(d)} 日`;
+        }
+
+        // ── Canvas chart ───────────────────────────────────────────────────
+        function drawChart(entries) { // entries: oldest first
+            const canvas = document.getElementById('progressChart');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const W = canvas.offsetWidth;
+            const H = 220;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            ctx.scale(dpr, dpr);
+
+            const pad = { top: 20, right: 20, bottom: 40, left: 44 };
+            const cW = W - pad.left - pad.right;
+            const cH = H - pad.top - pad.bottom;
+
+            const wpms = entries.map(([, v]) => v.wpm);
+            const minWpm = Math.max(0, Math.min(...wpms) - 10);
+            const maxWpm = Math.max(...wpms) + 10;
+            const range = maxWpm - minWpm || 1;
+
+            const xStep = cW / Math.max(entries.length - 1, 1);
+            const yScale = cH / range;
+
+            const px = i => pad.left + i * xStep;
+            const py = v => pad.top + cH - (v - minWpm) * yScale;
+
+            // Grid lines
+            ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 4; i++) {
+                const y = pad.top + (cH / 4) * i;
+                ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + cW, y); ctx.stroke();
+                const val = Math.round(maxWpm - (range / 4) * i);
+                ctx.fillStyle = '#9aa0a6'; ctx.font = '11px Inter, sans-serif'; ctx.textAlign = 'right';
+                ctx.fillText(val, pad.left - 8, y + 4);
+            }
+
+            // Gradient fill
+            const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + cH);
+            grad.addColorStop(0, 'rgba(26,115,232,0.18)');
+            grad.addColorStop(1, 'rgba(26,115,232,0)');
+            ctx.beginPath();
+            ctx.moveTo(px(0), py(wpms[0]));
+            wpms.forEach((v, i) => { if (i > 0) ctx.lineTo(px(i), py(v)); });
+            ctx.lineTo(px(wpms.length - 1), pad.top + cH);
+            ctx.lineTo(px(0), pad.top + cH);
+            ctx.closePath();
+            ctx.fillStyle = grad; ctx.fill();
+
+            // Line
+            ctx.beginPath();
+            ctx.moveTo(px(0), py(wpms[0]));
+            wpms.forEach((v, i) => { if (i > 0) ctx.lineTo(px(i), py(v)); });
+            ctx.strokeStyle = '#1a73e8'; ctx.lineWidth = 2.5;
+            ctx.lineJoin = 'round'; ctx.stroke();
+
+            // Points + labels
+            entries.forEach(([date, v], i) => {
+                const x = px(i), y = py(v.wpm);
+                ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2);
+                ctx.fillStyle = '#fff'; ctx.fill();
+                ctx.strokeStyle = '#1a73e8'; ctx.lineWidth = 2.5; ctx.stroke();
+
+                // X axis date label (show every Nth)
+                const nth = entries.length > 10 ? Math.ceil(entries.length / 6) : 1;
+                if (i % nth === 0 || i === entries.length - 1) {
+                    const [, m, d] = date.split('-');
+                    ctx.fillStyle = '#9aa0a6'; ctx.font = '11px Noto Sans SC, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`${parseInt(m)}/${parseInt(d)}`, x, pad.top + cH + 22);
+                }
+            });
+        }
+
+        // ── Guard: login on profile page ───────────────────────────────────
+        function setupGuardLogin() {
+            document.getElementById('guardGoogleBtn').addEventListener('click', async () => {
+                try {
+                    await loginWithGoogle();
+                    init();
+                } catch (e) { alert('登录失败，请通过 Live Server 或 HTTPS 域名访问此页面。'); }
+            });
+        }
+
+        // ── Logout ─────────────────────────────────────────────────────────
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            if (confirm('确认退出登录？')) {
+                await logout();
+                window.location.href = 'index.html';
+            }
+        });
+
+        init();
+    </script>
+</body>
+
+</html>

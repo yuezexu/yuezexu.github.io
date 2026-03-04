@@ -62,7 +62,7 @@
     =================================================== */
         .top-bar {
             width: 100%;
-            max-width: 900px;
+            max-width: 800px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -127,7 +127,7 @@
             box-shadow: var(--shadow);
             padding: 28px 36px;
             width: 100%;
-            max-width: 900px;
+            max-width: 800px;
             text-align: center;
             margin-bottom: 20px;
         }
@@ -217,7 +217,7 @@
     =================================================== */
         .progress-wrap {
             width: 100%;
-            max-width: 900px;
+            max-width: 800px;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
@@ -251,11 +251,8 @@
     =================================================== */
         .trainer-layout {
             width: 100%;
-            max-width: 900px;
-            display: grid;
-            grid-template-columns: 1fr 200px;
-            gap: 20px;
-            align-items: start;
+            max-width: 800px;
+            margin-bottom: 20px;
         }
 
         /* ===================================================
@@ -363,21 +360,24 @@
         }
 
         /* ===================================================
-       Hand Diagram (SVG)
+       Hand Diagram (SVG) – below keyboard
     =================================================== */
-        .hands-card {
+        .hands-section {
             background: var(--surface);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            padding: 16px;
+            padding: 18px 24px 14px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            margin-top: 0;
+            width: 100%;
+            max-width: 800px;
         }
 
         .hands-title {
-            font-size: .8rem;
+            font-size: .78rem;
             font-weight: 600;
             color: var(--muted);
             letter-spacing: .06em;
@@ -386,7 +386,7 @@
 
         #hands-svg {
             width: 100%;
-            max-width: 180px;
+            max-width: 520px;
         }
 
         .ftip {
@@ -424,11 +424,7 @@
        Responsive
     =================================================== */
         @media (max-width: 680px) {
-            .trainer-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .hands-card {
+            .hands-section {
                 flex-direction: row;
                 justify-content: center;
             }
@@ -473,23 +469,20 @@
         <div class="progress-label" id="progress-label">0 / 0</div>
     </div>
 
-    <!-- Keyboard + Hands -->
+    <!-- Keyboard -->
     <div class="trainer-layout">
-
-        <!-- SVG Keyboard -->
         <div class="keyboard-card">
             <div class="keyboard-svg-wrap">
                 <svg id="keyboard-svg" viewBox="0 0 620 220" xmlns="http://www.w3.org/2000/svg"></svg>
             </div>
             <div class="legend" id="legend"></div>
         </div>
+    </div>
 
-        <!-- Hand diagram -->
-        <div class="hands-card">
-            <div class="hands-title">指法示意</div>
-            <svg id="hands-svg" viewBox="0 0 185 250" xmlns="http://www.w3.org/2000/svg"></svg>
-        </div>
-
+    <!-- Hand diagram – below keyboard -->
+    <div class="hands-section">
+        <div class="hands-title">指法示意</div>
+        <svg id="hands-svg" viewBox="0 0 520 230" xmlns="http://www.w3.org/2000/svg"></svg>
     </div>
 
     <!-- Next word button -->
@@ -692,39 +685,41 @@
         // ── Custom-shaped Zone Borders ──────────────────────────
         function addZonePath(side, color, label) {
             const isRight = side === 'right';
-            const pad = 2;
+            const innerPad = 2; // Keeps the gap between the two boxes at 4px (since key gap is 8px)
+            const outerPad = 6; // Increases padding on top, bottom, and outer sides
+
             const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
             // X-Coordinates for each row's split and outer edges
-            const splitX = (row) => keyX(row, (row === 0 ? 5 : 4)) + KW + pad;
-            const rSplitX = (row) => keyX(row, (row === 0 ? 6 : 5)) - pad;
+            const splitX = (row) => keyX(row, (row === 0 ? 5 : 4)) + KW + innerPad;
+            const rSplitX = (row) => keyX(row, (row === 0 ? 6 : 5)) - innerPad;
 
             // Outer edges for each row
-            const outerL = (row) => keyX(row, 0) - pad;
+            const outerL = (row) => keyX(row, 0) - outerPad;
             const outerR = (row) => {
                 const rowKeys = ROWS[row].length;
-                return keyX(row, rowKeys - 1) + KW + pad;
+                return keyX(row, rowKeys - 1) + KW + outerPad;
             };
 
             let d = "";
-            const bottomY = KY[3] + KH + pad;
+            const bottomY = KY[3] + KH + outerPad;
 
             if (isRight) {
                 // Right Zone Path
                 const inner = (r) => rSplitX(r);
                 const outer = (r) => outerR(r);
 
-                d = `M ${inner(0)},${KY[0] - pad} `;
+                d = `M ${inner(0)},${KY[0] - outerPad} `;
                 // Top edge
                 d += `H ${outer(0)} `;
                 // Outer staggered edge (Right side)
                 for (let i = 0; i <= 3; i++) {
-                    d += `V ${KY[i] + KH + pad} H ${outer(i + 1 === 4 ? 3 : i + 1)} `;
+                    d += `V ${KY[i] + KH + outerPad} H ${outer(i + 1 === 4 ? 3 : i + 1)} `;
                 }
                 d += `V ${bottomY} H ${inner(3)} `;
                 // Inner staggered edge (Left side)
                 for (let i = 3; i >= 1; i--) {
-                    d += `V ${KY[i] - pad} H ${inner(i - 1)} `;
+                    d += `V ${KY[i] - innerPad} H ${inner(i - 1)} `;
                 }
                 d += `Z`;
             } else {
@@ -732,17 +727,17 @@
                 const outer = (r) => outerL(r);
                 const inner = (r) => splitX(r);
 
-                d = `M ${outer(0)},${KY[0] - pad} `;
+                d = `M ${outer(0)},${KY[0] - outerPad} `;
                 // Top edge
                 d += `H ${inner(0)} `;
                 // Inner staggered edge (Right side)
                 for (let i = 0; i <= 2; i++) {
-                    d += `V ${KY[i] + KH + pad} H ${inner(i + 1)} `;
+                    d += `V ${KY[i] + KH + innerPad} H ${inner(i + 1)} `;
                 }
                 d += `V ${bottomY} H ${outer(3)} `;
                 // Outer staggered edge (Left side)
                 for (let i = 3; i >= 1; i--) {
-                    d += `V ${KY[i] - pad} H ${outer(i - 1)} `;
+                    d += `V ${KY[i] - outerPad} H ${outer(i - 1)} `;
                 }
                 d += `Z`;
             }
@@ -780,7 +775,7 @@
         });
 
         /* ====================================================
-           SVG HAND DIAGRAM  –  seamless connected design
+           SVG HAND DIAGRAM  –  realistic bezier hand design
         ==================================================== */
         const handSvg = document.getElementById('hands-svg');
 
@@ -792,103 +787,147 @@
             return el;
         }
 
-        // Draws one hand. ox = left-edge x. mirror = true for right hand.
-        // Strategy: draw fill-only shapes first so they merge, then borders on top.
-        function drawHand(ox, mirror) {
-            // finger [relX, tipY, h, w]
-            // left:  pinky→index (left→right)
-            // right: index→pinky (left→right)
-            const fdefs = mirror
-                ? [[6, 42, 72, 14], [22, 28, 86, 14], [38, 38, 76, 14], [52, 60, 54, 13]]
-                : [[2, 60, 54, 13], [16, 38, 76, 14], [32, 28, 86, 14], [48, 42, 72, 14]];
-
-            const palmX = ox + 2, palmY = 108, palmW = 68, palmH = 76;
-            const FILL = '#e8eaed', STROKE = '#c4c7cb', SW = 1.4;
-
-            // 1. Finger fills extend deep into palm (no visible joint gap)
-            fdefs.forEach(([rx, tipY, h, w]) =>
-                svgEl('rect', {
-                    x: ox + rx, y: tipY, width: w, height: h + 24,
-                    rx: 6, fill: FILL, stroke: 'none'
-                })
-            );
-
-            // 2. Palm fill (covers finger bases, creates seamless merge)
-            svgEl('rect', {
-                x: palmX, y: palmY, width: palmW, height: palmH,
-                rx: 18, fill: FILL, stroke: 'none'
-            });
-
-            // 3. Thumb fill (rotated, tucked at side of palm)
-            const tpx = mirror ? ox + palmW - 5 : ox + 2;
-            const tpivX = tpx + 7, tpivY = palmY + 34;
-            const rot = mirror ? `rotate(24,${tpivX},${tpivY})` : `rotate(-24,${tpivX},${tpivY})`;
-            svgEl('rect', {
-                x: tpx, y: palmY + 26, width: 13, height: 52, rx: 6,
-                fill: FILL, stroke: 'none', transform: rot
-            });
-
-            // 4. Draw borders on top (finger tips only, palm, thumb)
-            fdefs.forEach(([rx, tipY, h, w]) =>
-                svgEl('rect', {
-                    x: ox + rx, y: tipY, width: w, height: h,
-                    rx: 6, fill: 'none', stroke: STROKE, 'stroke-width': SW
-                })
-            );
-            svgEl('rect', {
-                x: palmX, y: palmY, width: palmW, height: palmH,
-                rx: 18, fill: 'none', stroke: STROKE, 'stroke-width': SW
-            });
-            svgEl('rect', {
-                x: tpx, y: palmY + 26, width: 13, height: 52, rx: 6,
-                fill: 'none', stroke: STROKE, 'stroke-width': SW, transform: rot
-            });
-
-            // 5. Wrist
-            svgEl('rect', {
-                x: palmX + 9, y: palmY + palmH - 5, width: palmW - 18, height: 24, rx: 7,
-                fill: '#dde1e7', stroke: STROKE, 'stroke-width': 1.2
-            });
+        function addSvgText(parent, x, y, text, size, color, weight) {
+            const el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            el.setAttribute('x', x); el.setAttribute('y', y);
+            el.setAttribute('text-anchor', 'middle');
+            el.setAttribute('fill', color || '#9aa0a6');
+            el.setAttribute('font-size', size || 10);
+            el.setAttribute('font-weight', weight || 400);
+            el.setAttribute('font-family', 'Noto Sans SC,sans-serif');
+            el.setAttribute('pointer-events', 'none');
+            el.textContent = text;
+            (parent || handSvg).appendChild(el);
+            return el;
         }
 
-        drawHand(4, false); // left hand
-        drawHand(106, true);  // right hand
+        /**
+         * Draw a simple icon-style hand as a single closed SVG path.
+         * For the left hand, fingers go: pinky(left) → index(right), thumb lower-right.
+         * Right hand is mirrored via SVG transform.
+         * Returns {tipCenters} with world-space coordinates for finger dot placement.
+         */
+        function drawIconHand(cx, direction) {
+            const isRight = direction === 'right';
+            // Mirror the right hand by flipping around cx
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            handSvg.appendChild(g);
+            if (isRight) g.setAttribute('transform', `scale(-1,1) translate(${-cx * 2}, 0)`);
+
+            // All coordinates are for the LEFT hand.
+            // Fingers left→right: pinky, ring, middle, index. Thumb on right side.
+            // Single closed outline path (fill + stroke together = one-stroke hand icon).
+            const x = cx;  // palm horizontal center
+            const y = 195; // wrist y (bottom)
+
+            // Finger tip y positions (measured from top of SVG)
+            const pTip = 78, rTip = 58, mTip = 46, iTip = 62; // pinky/ring/mid/index tip
+            const pW = 7, rW = 9, mW = 9, iW = 8; // half-widths
+            // Finger center x positions relative to palm center
+            const pX = x - 33, rX = x - 16, mX = x + 1, iX = x + 18;
+            // Valley Y between fingers (U-shaped dips in the outline)
+            const vY = 105;
+            // Palm sides
+            const palmL = x - 39, palmR = x + 35;
+            // Wrist bottom y
+            const wY = y + 2;
+
+            // The thumb: sticks out from the right side of the palm
+            // Thumb tip (in left-hand space) is to the right and up
+            const thTipX = x + 62, thTipY = y - 57;
+
+            const d = [
+                // Start: wrist bottom-left
+                `M ${palmL} ${wY}`,
+                // Up left side of palm
+                `C ${palmL} ${y - 20} ${palmL - 2} ${y - 55} ${pX - pW} ${vY}`,
+                // Up left side of pinky
+                `L ${pX - pW} ${pTip + pW * 1.5}`,
+                // Round pinky tip
+                `Q ${pX - pW} ${pTip} ${pX} ${pTip}`,
+                `Q ${pX + pW} ${pTip} ${pX + pW} ${pTip + pW * 1.5}`,
+                // Down right of pinky, valley, up left ring
+                `C ${pX + pW} ${vY} ${rX - rW} ${vY} ${rX - rW} ${vY - 4}`,
+                `L ${rX - rW} ${rTip + rW * 1.5}`,
+                // Round ring tip
+                `Q ${rX - rW} ${rTip} ${rX} ${rTip}`,
+                `Q ${rX + rW} ${rTip} ${rX + rW} ${rTip + rW * 1.5}`,
+                // Down right of ring, valley, up left middle
+                `C ${rX + rW} ${vY} ${mX - mW} ${vY} ${mX - mW} ${vY - 6}`,
+                `L ${mX - mW} ${mTip + mW * 1.5}`,
+                // Round middle tip
+                `Q ${mX - mW} ${mTip} ${mX} ${mTip}`,
+                `Q ${mX + mW} ${mTip} ${mX + mW} ${mTip + mW * 1.5}`,
+                // Down right of middle, valley, up left index
+                `C ${mX + mW} ${vY} ${iX - iW} ${vY} ${iX - iW} ${vY - 4}`,
+                `L ${iX - iW} ${iTip + iW * 1.5}`,
+                // Round index tip
+                `Q ${iX - iW} ${iTip} ${iX} ${iTip}`,
+                `Q ${iX + iW} ${iTip} ${iX + iW} ${iTip + iW * 1.5}`,
+                // Down right of index to right side of palm → into thumb web
+                `C ${iX + iW} ${vY} ${palmR} ${y - 60} ${palmR} ${y - 38}`,
+                // Curve toward thumb base
+                `C ${palmR} ${y - 20} ${x + 38} ${y - 12} ${x + 34} ${y - 18}`,
+                // Up right side of thumb
+                `C ${x + 38} ${y - 30} ${thTipX + 4} ${thTipY + 12} ${thTipX} ${thTipY}`,
+                // Round thumb tip
+                `Q ${thTipX - 4} ${thTipY - 8} ${thTipX - 10} ${thTipY - 2}`,
+                // Down left side of thumb back to palm
+                `C ${thTipX - 14} ${thTipY + 12} ${x + 24} ${y - 30} ${x + 20} ${y - 14}`,
+                // Down right palm to wrist
+                `C ${x + 22} ${y - 4} ${palmR - 10} ${wY} ${palmR} ${wY}`,
+                // Wrist bottom curve
+                `Q ${cx} ${wY + 10} ${palmL} ${wY}`,
+                `Z`
+            ].join(' ');
+
+            svgEl('path', {
+                d,
+                fill: '#f0ebe4',
+                stroke: '#b0a090',
+                'stroke-width': 2,
+                'stroke-linejoin': 'round',
+                'stroke-linecap': 'round'
+            }, g);
+
+            // Wrist line hint
+            svgEl('line', {
+                x1: palmL + 8, y1: wY,
+                x2: palmR - 8, y2: wY,
+                stroke: '#c0b0a0', 'stroke-width': 1, 'stroke-linecap': 'round'
+            }, g);
+
+            // Return world-space tip centers (accounting for mirror transform)
+            const mirror = (wx) => isRight ? cx * 2 - wx : wx;
+            return {
+                tipCenters: {
+                    [isRight ? 'rp' : 'lp']: { cx: mirror(pX), cy: pTip },
+                    [isRight ? 'rr' : 'lr']: { cx: mirror(rX), cy: rTip },
+                    [isRight ? 'rm' : 'lm']: { cx: mirror(mX), cy: mTip },
+                    [isRight ? 'ri' : 'li']: { cx: mirror(iX), cy: iTip },
+                    [isRight ? 'rt' : 'lt']: { cx: mirror(thTipX - 5), cy: thTipY },
+                }
+            };
+        }
+
+        // Draw both hands. ViewBox 520 wide; left center ~130, right ~390.
+        const leftResult = drawIconHand(130, 'left');
+        const rightResult = drawIconHand(390, 'right');
 
         // Labels
-        svgEl('text', {
-            x: 41, y: 240, 'text-anchor': 'middle', fill: '#9aa0a6',
-            'font-size': 9, 'font-weight': 600,
-            'font-family': 'Noto Sans SC,sans-serif', 'pointer-events': 'none'
-        }).textContent = '左手';
-        svgEl('text', {
-            x: 143, y: 240, 'text-anchor': 'middle', fill: '#9aa0a6',
-            'font-size': 9, 'font-weight': 600,
-            'font-family': 'Noto Sans SC,sans-serif', 'pointer-events': 'none'
-        }).textContent = '右手';
+        addSvgText(handSvg, 130, 218, '左手', 11, '#9aa0a6', 600);
+        addSvgText(handSvg, 390, 218, '右手', 11, '#9aa0a6', 600);
 
-        // Fingertip dot positions  (ox=4 left, ox=106 right)
-        // Each cx = ox + relX + w/2; cy = tipY + 7
-        const fingerTips = [
-            // Left  (finger order: pinky, ring, middle, index, thumb)
-            { id: 'lp', cx: 4 + 2 + 6, cy: 60 + 7 },  // pinky:  cx=12, cy=67
-            { id: 'lr', cx: 4 + 16 + 7, cy: 38 + 7 },  // ring:   cx=27, cy=45
-            { id: 'lm', cx: 4 + 32 + 7, cy: 28 + 7 },  // middle: cx=43, cy=35
-            { id: 'li', cx: 4 + 48 + 7, cy: 42 + 7 },  // index:  cx=59, cy=49
-            { id: 'lt', cx: 10, cy: 152 },  // thumb  (approx)
-            // Right (mirror: index, middle, ring, pinky, thumb)
-            { id: 'rt', cx: 172, cy: 152 },  // thumb  (approx)
-            { id: 'ri', cx: 106 + 6 + 7, cy: 42 + 7 },  // index:  cx=119, cy=49
-            { id: 'rm', cx: 106 + 22 + 7, cy: 28 + 7 },  // middle: cx=135, cy=35
-            { id: 'rr', cx: 106 + 38 + 7, cy: 38 + 7 },  // ring:   cx=151, cy=45
-            { id: 'rp', cx: 106 + 52 + 6, cy: 60 + 7 },  // pinky:  cx=164, cy=67
-        ];
+        // Collect tip centers
+        const allTips = { ...leftResult.tipCenters, ...rightResult.tipCenters };
+        const fingerTips = Object.entries(allTips).map(([id, pos]) => ({ id, ...pos }));
 
         // Draw fingertip coloured circles – semi-transparent by default
         const ftipMap = {};
         fingerTips.forEach(({ id, cx, cy }) => {
             const color = fingerColor[id];
             const c = svgEl('circle', {
-                cx, cy, r: 9,
+                cx, cy, r: 10,
                 fill: color, stroke: '#fff', 'stroke-width': 1.5,
                 opacity: 0.2,
                 class: 'ftip'
@@ -1063,17 +1102,17 @@
             if (key.length !== 1 && key !== 'Backspace') return;
             if (key === 'Backspace') return; // no backspace support by design
 
-            const expected = currentWord[charIndex].toUpperCase();
-            const pressed = key.toUpperCase();
-
-            // Special Case: Word complete, any key (or space specifically) advances?
-            // User requested "monitor input correct then press space to switch"
+            // Word complete check must come FIRST to avoid TypeError
             if (charIndex >= currentWord.length) {
                 if (key === ' ') {
                     nextWord();
                 }
+                e.preventDefault();
                 return;
             }
+
+            const expected = currentWord[charIndex].toUpperCase();
+            const pressed = key.toUpperCase();
 
             if (pressed === expected) {
                 // Correct
