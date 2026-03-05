@@ -570,6 +570,72 @@
         /* ===================================================
        Responsive
     =================================================== */
+        /* Dropdown Menu Styles */
+        .mode-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--surface);
+            min-width: 180px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            z-index: 1001;
+            margin-top: 8px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            animation: fadeInDown 0.2s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .mode-dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            color: var(--muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-align: left;
+            border: none;
+            background: none;
+            width: 100%;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--primary-l);
+            color: var(--primary);
+        }
+
+        .dropdown-item.active {
+            color: var(--primary);
+            font-weight: 700;
+            background-color: var(--primary-l);
+        }
+
         @media (max-width: 680px) {
             .hands-section {
                 flex-direction: row;
@@ -596,9 +662,18 @@
 
     <!-- Mode selector -->
     <div class="mode-bar">
-        <button class="mode-btn active" id="btn-homerow" onclick="setMode('homerow')">
-            Home Row 入门
-        </button>
+        <div class="mode-dropdown">
+            <button class="mode-btn active" id="btn-practice-region">
+                选择练习区域 ▼
+            </button>
+            <div class="dropdown-content">
+                <button class="dropdown-item" data-region="homerow" onclick="setMode('region-home')">Home Row
+                    (中排)</button>
+                <button class="dropdown-item" data-region="toprow" onclick="setMode('region-top')">Top Row (上排)</button>
+                <button class="dropdown-item" data-region="bottomrow" onclick="setMode('region-bottom')">Bottom Row
+                    (下排)</button>
+            </div>
+        </div>
         <button class="mode-btn" id="btn-pinyin" onclick="setMode('pinyin')">
             全拼单词练习
         </button>
@@ -686,10 +761,6 @@
            DATA: Word/Phrase Lists
         ==================================================== */
         const WORD_LISTS = {
-            homerow: [
-                'asdf', 'jkl', 'fdsajkl', 'asdfjkl', 'fjdk', 'slak', 'flask', 'salad', 'flag',
-                'glad', 'half', 'lash', 'dash', 'asks', 'fall', 'hall', 'lass',
-            ],
             pinyin: [
                 'nihao', 'xuexi', 'shijie', 'zhongguo', 'putonghua', 'jiantizi',
                 'kaishi', 'jieshu', 'xuesheng', 'laoshi', 'pengyou', 'jiating',
@@ -697,6 +768,27 @@
                 'lvxing', 'jiandao', 'wenhua', 'kehuan', 'zhuyin', 'pinyin',
             ],
         };
+
+        const REGION_KEYS = {
+            'region-home': ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'"],
+            'region-top': ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+            'region-bottom': ['z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/']
+        };
+
+        function generateRegionWords(regionId, count = 20) {
+            const keys = REGION_KEYS[regionId];
+            if (!keys) return [];
+            const list = [];
+            for (let i = 0; i < count; i++) {
+                const len = 4 + Math.floor(Math.random() * 4);
+                let w = "";
+                for (let j = 0; j < len; j++) {
+                    w += keys[Math.floor(Math.random() * keys.length)];
+                }
+                list.push(w);
+            }
+            return list;
+        }
 
         /* ====================================================
            STATE
@@ -1203,10 +1295,33 @@
         ==================================================== */
         function setMode(mode) {
             currentMode = mode;
-            document.getElementById('btn-homerow').classList.toggle('active', mode === 'homerow');
-            document.getElementById('btn-pinyin').classList.toggle('active', mode === 'pinyin');
 
-            wordList = shuffle([...WORD_LISTS[mode]]);
+            // UI Buttons
+            document.getElementById('btn-pinyin').classList.toggle('active', mode === 'pinyin');
+            const regionBtn = document.getElementById('btn-practice-region');
+            const isRegion = mode.startsWith('region-');
+            regionBtn.classList.toggle('active', isRegion);
+
+            // Dropdown items active state
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                const itemMode = item.getAttribute('onclick').match(/'([^']+)'/)[1];
+                item.classList.toggle('active', itemMode === mode);
+                if (itemMode === mode && isRegion) {
+                    regionBtn.innerHTML = `${item.textContent} ▼`;
+                }
+            });
+
+            if (!isRegion) {
+                regionBtn.innerHTML = '选择练习区域 ▼';
+            }
+
+            // Data logic
+            if (isRegion) {
+                wordList = generateRegionWords(mode);
+            } else {
+                wordList = shuffle([...WORD_LISTS[mode]]);
+            }
+
             wordIndex = 0;
             wordsDone = 0;
             totalWords = wordList.length;
@@ -1307,7 +1422,7 @@
         /* ====================================================
            INIT
         ==================================================== */
-        setMode('homerow');
+        setMode('region-home');
     </script>
 </body>
 
